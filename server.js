@@ -8,7 +8,7 @@ var cors = require('cors');
 var app = express();
 const multer = require('multer')
 
-let upload = multer({dest: 'uploads/'})
+let upload = multer({dest: 'assets/'})
 
 app.use(cors());
 app.use('/public', express.static(process.cwd() + '/public'));
@@ -17,13 +17,10 @@ app.get('/', function (req, res) {
      res.sendFile(process.cwd() + '/views/index.html');
   });
 
-app.post('/api/fileanalyse', upload.single('form'),function (req, res, next) {
-    console.log(req.file)
+app.post('/api/fileanalyse', upload.single('upfile'),function (req, res, next) {
+    res.json({fileName: req.file.originalname, sizeInBytes:req.file.size})
   });
 
-app.get('/hello', function(req, res){
-  res.json({greetings: "Hello, API"});
-});
 
 app.listen(process.env.PORT || 3000, function () {
   console.log('Node.js listening ...');
